@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UnitOfWork } from '../services/unit-of-work';
+import { UnitOfWork } from '../unit-of-work';
 
 export class UserController {
   private unitOfWork: UnitOfWork;
