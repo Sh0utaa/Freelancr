@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "target": "ES6",
     "module": "commonjs",
     "outDir": "./dist",

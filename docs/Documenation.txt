@@ -1,0 +1,18 @@
+This project is a backend API for FreelancR.
+FreelancR is a freelancing platform for connecting businesses with talent.
+
+About this API:
+its an ExpressJs API using Typescript, it utilizes the repository and unit of work patterns.
+the ORM is Prisma for the Postgres database which is hosted on railway.app
+using Scalar UI for the API endpoint visulisation on `/docs` route
+
+the repositories abstract the database logic layer from the controllers which are all united by the unit-of-work.ts file
+then these repositories are utilized in the contorllers where we define our endpoints with "tsoa" instead of writing
+YAML files for the directories inside the contorllers themselves.
+
+
+9th of August
+added Scalar UI with tsoa, tsoa defines the API endpoints and running the scrips 
+`npx tsoa routes && npx tsoa spec` automatically defines the api routes in swagger.json which 
+then we use in app.ts to configure the controllers, in the scalar UI we can see the endpoints, 
+the controllers are set up the repositories and interfaces are also set up we can start coding

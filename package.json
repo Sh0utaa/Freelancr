@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
+    "build:tsoa": "npx tsoa routes && npx tsoa spec",
+    "dev": "nodemon --exec \"npm run build:tsoa && ts-node src/app.ts\"",
     "build": "tsc",
     "start": "node dist/app.js",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -16,15 +17,20 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^6.13.0",
+    "@scalar/express-api-reference": "^0.8.13",
     "express": "^5.1.0",
-    "prisma": "^6.13.0"
+    "prisma": "^6.13.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "tsoa": "^6.6.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.2.1",
+    "@types/swagger-jsdoc": "^6.0.4",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   }
 }
