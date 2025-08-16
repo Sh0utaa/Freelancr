@@ -18,14 +18,19 @@
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "@scalar/express-api-reference": "^0.8.13",
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
     "prisma": "^6.13.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "tsoa": "^6.6.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.2.1",
     "@types/swagger-jsdoc": "^6.0.4",
     "nodemon": "^3.1.10",

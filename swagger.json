@@ -6,7 +6,138 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"DefaultSelection_Prisma._36_UserPayload_": {
+				"properties": {
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"pictureUrl": {
+						"type": "string"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"emailVerified": {
+						"type": "boolean"
+					},
+					"email": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"updatedAt",
+					"createdAt",
+					"pictureUrl",
+					"birthDate",
+					"username",
+					"password",
+					"emailVerified",
+					"email",
+					"id"
+				],
+				"type": "object"
+			},
+			"User": {
+				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_UserPayload_",
+				"description": "Model User"
+			},
+			"Pick_User.Exclude_keyofUser.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts__": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"pictureUrl": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password",
+					"username",
+					"birthDate",
+					"pictureUrl"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_User.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts_": {
+				"$ref": "#/components/schemas/Pick_User.Exclude_keyofUser.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"publicUser": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Omit_User.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts_"
+					},
+					{
+						"properties": {
+							"birthDate": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"birthDate"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"Partial_publicUser_": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"birthDate": {
+						"allOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"type": "string"
+							}
+						]
+					},
+					"pictureUrl": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			}
+		},
 		"securitySchemes": {}
 	},
 	"info": {
@@ -18,42 +149,235 @@
 		"contact": {}
 	},
 	"paths": {
-		"/test": {
+		"/users/{userEmail}": {
 			"get": {
-				"operationId": "GetTest",
+				"operationId": "GetUserByEmail",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/User"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"reason": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"reason"
+									],
+									"type": "object"
 								}
 							}
 						}
 					}
 				},
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userEmail",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
-		"/test/buh": {
-			"get": {
-				"operationId": "GetBuh",
+		"/users": {
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"pictureUrl": {
+											"type": "string"
+										},
+										"birthDate": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"username": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										},
+										"emailVerified": {
+											"type": "boolean"
+										},
+										"email": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"updatedAt",
+										"createdAt",
+										"pictureUrl",
+										"birthDate",
+										"username",
+										"password",
+										"emailVerified",
+										"email",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Birth date in YYYY-MM-DD format",
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/publicUser"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{userId}": {
+			"put": {
+				"operationId": "UpdateUser",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"properties": {
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"pictureUrl": {
+											"type": "string"
+										},
+										"birthDate": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"username": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										},
+										"emailVerified": {
+											"type": "boolean"
+										},
+										"email": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"updatedAt",
+										"createdAt",
+										"pictureUrl",
+										"birthDate",
+										"username",
+										"password",
+										"emailVerified",
+										"email",
+										"id"
+									],
+									"type": "object"
 								}
 							}
 						}
 					}
 				},
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_publicUser_"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

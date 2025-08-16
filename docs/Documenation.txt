@@ -16,3 +16,11 @@ added Scalar UI with tsoa, tsoa defines the API endpoints and running the scrips
 `npx tsoa routes && npx tsoa spec` automatically defines the api routes in swagger.json which 
 then we use in app.ts to configure the controllers, in the scalar UI we can see the endpoints, 
 the controllers are set up the repositories and interfaces are also set up we can start coding
+
+14th of August
+you don't need to make custom models in express becausae prisma Schemas automatically generate the Models.
+added basic CRUD operations to user model, DTOs aren't nesessary in Typescript because they have their own Utility types 
+which is rly cool. now im going to add PassportJs for login and registration for JWT auth tokens and password encryptions
+
+
+npx prisma migrate dev

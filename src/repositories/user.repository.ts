@@ -1,5 +1,6 @@
 import { PrismaClient, User } from '@prisma/client';
 import { IUserRepository } from '../interfaces/user.repository.interface';
+import { publicUser } from '../interfaces/publicUser.interface';
 
 const prisma = new PrismaClient();
 export class UserRepository implements IUserRepository {
@@ -11,27 +12,43 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
+
   async getById(id: string): Promise<User | null> {
     try {
       return await prisma.user.findUnique({
         where: { id },
       });
     } catch (error) {
-      console.error(`Errow while getting user by id: ${error}`);
+      console.error(`Errow while getting user by mail: ${error}`);
       throw error;
     }
   }
-  async create(user: Omit<User, 'id'>): Promise<User> {
+
+  async getByEmail(email: string): Promise<User | null> {
     try {
+      return await prisma.user.findUnique({
+        where: { email },
+      });
+    } catch (error) {
+      console.error(`Errow while getting user by mail: ${error}`);
+      throw error;
+    }
+  }
+
+  async create(user: publicUser): Promise<User> {
+    try {
+      const birthDate = await this.parseBirthDate(user.birthDate);
+
       return await prisma.user.create({
-        data: user,
+        data: { ...user, birthDate },
       });
     } catch (error) {
       console.error(`Error while creating a user ${error}`);
       throw error;
     }
   }
-  async update(id: string, user: Partial<User>): Promise<User | null> {
+
+  async update(id: string, user: Partial<publicUser>): Promise<User | null> {
     try {
       return await prisma.user.update({
         where: { id },
@@ -45,6 +62,7 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
+
   async delete(id: string): Promise<boolean> {
     try {
       await prisma.user.delete({
@@ -59,5 +77,11 @@ export class UserRepository implements IUserRepository {
       console.error(`Error while deleting user: ${error}`);
       throw error;
     }
+  }
+  async parseBirthDate(input: string): Promise<Date> {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+      throw new Error('birthDate must be in YYYY-MM-DD format');
+    }
+    return new Date(input + 'T00:00:00Z');
   }
 }
