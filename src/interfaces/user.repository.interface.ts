@@ -5,6 +5,7 @@ export interface IUserRepository {
   getAll(): Promise<User[]>;
   getById(id: string): Promise<User | null>;
   getByEmail(email: string): Promise<User | null>;
+  login(email: string, password: string): Promise<string>;
   create(
     user: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'emailVerified' | 'posts'> & {
       birthDate: string;

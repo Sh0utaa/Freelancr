@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { PrismaClient, User } from '@prisma/client';
 import { IUserRepository } from '../interfaces/user.repository.interface';
 import { publicUser } from '../interfaces/publicUser.interface';
@@ -37,6 +38,32 @@ export class UserRepository implements IUserRepository {
       console.error(`Errow while getting user by mail: ${error}`);
       throw error;
     }
+  }
+
+  async login(email: string, password: string): Promise<string> {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      throw new Error('Please provide a proper email address');
+    }
+
+    const user = await prisma.user.findFirst({ where: { email } });
+    if (!user) {
+      throw new Error(`Account with the email of ${email} doesn't exist`);
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) throw new Error('Invalid password');
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: '72h',
+      },
+    );
+
+    return token;
   }
 
   async create(user: publicUser): Promise<User> {

@@ -49,18 +49,18 @@ export class Validator {
   }
 
   public async validateEmail(email: string): Promise<ValidationResult<string>> {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return { success: false, error: 'Please provide a valid email address' };
+    }
+
     if (
       await prisma.user.findFirst({
         where: { email },
       })
     ) {
       return { success: false, error: 'User with this email is already registered' };
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return { success: false, error: 'Please provide a valid email address' };
     }
 
     return { success: true, value: email };

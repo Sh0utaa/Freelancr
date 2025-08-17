@@ -12,7 +12,7 @@ import {
 } from 'tsoa';
 import { User } from '@prisma/client';
 import { UserRepository } from '../repositories/user.repository';
-import { publicUser } from '../interfaces/publicUser.interface';
+import { loginForm, publicUser } from '../interfaces/publicUser.interface';
 
 const userRepository = new UserRepository();
 
@@ -25,13 +25,19 @@ export class UsersController extends Controller {
     return null;
   }
 
+  @SuccessResponse('201', 'Logged in')
+  @Post('/login')
+  public async Login(@Body() loginForm: loginForm): Promise<string> {
+    return await userRepository.login(loginForm.email, loginForm.password);
+  }
+
   /**
    * Birth date in YYYY-MM-DD format
    * @example "1990-05-23"
    */
-  @SuccessResponse('201', 'Created')
-  @Post()
-  public async createUser(@Body() requestBody: publicUser) {
+  @SuccessResponse('201', 'Registered')
+  @Post('/register')
+  public async Register(@Body() requestBody: publicUser) {
     return await userRepository.create(requestBody);
   }
 

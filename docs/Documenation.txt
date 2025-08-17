@@ -24,3 +24,10 @@ which is rly cool. now im going to add PassportJs for login and registration for
 
 
 npx prisma migrate dev
+
+
+17th of August
+drank a redbull and now im flying through this code
+added registration and update functions with password encryption, email, username and data of birth validation
+get user now takes a query of an Id or an Email 
+and added proper error handling from the backend
