@@ -22,24 +22,24 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"DefaultSelection_Prisma._36_UserPayload_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_User.Exclude_keyofUser.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts__": {
+    "Pick_User.Exclude_keyofUser.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts-or-birthDate__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"password":{"dataType":"string","required":true},"username":{"dataType":"string","required":true},"birthDate":{"dataType":"datetime","required":true},"pictureUrl":{"dataType":"string","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"password":{"dataType":"string","required":true},"username":{"dataType":"string","required":true},"pictureUrl":{"dataType":"string","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_User.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts_": {
+    "Omit_User.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts-or-birthDate_": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_User.Exclude_keyofUser.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts__","validators":{}},
+        "type": {"ref":"Pick_User.Exclude_keyofUser.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts-or-birthDate__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "publicUser": {
         "dataType": "refAlias",
-        "type": {"dataType":"intersection","subSchemas":[{"ref":"Omit_User.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts_"},{"dataType":"nestedObjectLiteral","nestedProperties":{"birthDate":{"dataType":"string","required":true}}}],"validators":{}},
+        "type": {"dataType":"intersection","subSchemas":[{"ref":"Omit_User.id-or-createdAt-or-updatedAt-or-emailVerified-or-posts-or-birthDate_"},{"dataType":"nestedObjectLiteral","nestedProperties":{"birthDate":{"dataType":"string","required":true}}}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_publicUser_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"password":{"dataType":"string"},"username":{"dataType":"string"},"birthDate":{"dataType":"intersection","subSchemas":[{"dataType":"datetime"},{"dataType":"string"}]},"pictureUrl":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"password":{"dataType":"string"},"username":{"dataType":"string"},"pictureUrl":{"dataType":"string"},"birthDate":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };

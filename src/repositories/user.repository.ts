@@ -1,8 +1,12 @@
+import bcrypt from 'bcrypt';
 import { PrismaClient, User } from '@prisma/client';
 import { IUserRepository } from '../interfaces/user.repository.interface';
 import { publicUser } from '../interfaces/publicUser.interface';
+import { Validator } from '../services/validator';
 
+const validator = new Validator();
 const prisma = new PrismaClient();
+
 export class UserRepository implements IUserRepository {
   async getAll(): Promise<User[]> {
     try {
@@ -37,10 +41,20 @@ export class UserRepository implements IUserRepository {
 
   async create(user: publicUser): Promise<User> {
     try {
-      const birthDate = await this.parseBirthDate(user.birthDate);
+      var validatedResult = await validator.validateUser(user);
+      if (validatedResult.success !== true) {
+        throw new Error(validatedResult.error);
+      }
+
+      var birthDateResult = await validator.parseBirthday(user.birthDate);
+      if (birthDateResult.success !== true) {
+        throw new Error(birthDateResult.error);
+      }
+
+      let hashedPassword = await bcrypt.hash(user.password, 10);
 
       return await prisma.user.create({
-        data: { ...user, birthDate },
+        data: { ...user, birthDate: birthDateResult.value, password: hashedPassword },
       });
     } catch (error) {
       console.error(`Error while creating a user ${error}`);
@@ -56,7 +70,7 @@ export class UserRepository implements IUserRepository {
       });
     } catch (error: any) {
       if (error.code === 'P2025') {
-        return null; // no user found
+        return null;
       }
       console.error(`Error while updating user ${error}`);
       throw error;
@@ -77,11 +91,5 @@ export class UserRepository implements IUserRepository {
       console.error(`Error while deleting user: ${error}`);
       throw error;
     }
-  }
-  async parseBirthDate(input: string): Promise<Date> {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(input)) {
-      throw new Error('birthDate must be in YYYY-MM-DD format');
-    }
-    return new Date(input + 'T00:00:00Z');
   }
 }

@@ -9,12 +9,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// OpenAPI JSON
 app.get('/openapi.json', (req, res) => {
   res.json(swaggerJson);
 });
 
-// Scalar UI
 app.use(
   '/docs',
   apiReference({
@@ -23,7 +21,6 @@ app.use(
   }),
 );
 
-// Auto-loads all controllers based on tsoa.json config
 RegisterRoutes(app);
 
 app.use(function errorHandler(
@@ -36,12 +33,14 @@ app.use(function errorHandler(
     console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
     return res.status(422).json({
       message: 'Validation Failed',
-      details: err?.fields,
+      details: err.fields,
     });
   }
+
   if (err instanceof Error) {
-    return res.status(500).json({
-      message: 'Internal Server Error',
+    console.warn(`Caught Error for ${req.path}:`, err.message);
+    return res.status(400).json({
+      message: err.message,
     });
   }
 
