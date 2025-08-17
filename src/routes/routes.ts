@@ -59,26 +59,26 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsUsersController_getUserByEmail: Record<string, TsoaRoute.ParameterSchema> = {
-                userEmail: {"in":"path","name":"userEmail","required":true,"dataType":"string"},
-                notFoundResponse: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"reason":{"dataType":"string","required":true}}},
+        const argsUsersController_getUser: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"query","name":"id","dataType":"string"},
+                email: {"in":"query","name":"email","dataType":"string"},
         };
-        app.get('/users/:userEmail',
+        app.get('/users',
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
-            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUserByEmail)),
+            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUser)),
 
-            async function UsersController_getUserByEmail(request: ExRequest, response: ExResponse, next: any) {
+            async function UsersController_getUser(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsUsersController_getUserByEmail, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsUsersController_getUser, request, response });
 
                 const controller = new UsersController();
 
               await templateService.apiHandler({
-                methodName: 'getUserByEmail',
+                methodName: 'getUser',
                 controller,
                 response,
                 next,
@@ -121,10 +121,10 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUsersController_updateUser: Record<string, TsoaRoute.ParameterSchema> = {
-                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+                userEmail: {"in":"path","name":"userEmail","required":true,"dataType":"string"},
                 requestBody: {"in":"body","name":"requestBody","required":true,"ref":"Partial_publicUser_"},
         };
-        app.put('/users/:userId',
+        app.put('/users/:userEmail',
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.updateUser)),
 
@@ -152,9 +152,9 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUsersController_deleteUser: Record<string, TsoaRoute.ParameterSchema> = {
-                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+                userEmail: {"in":"path","name":"userEmail","required":true,"dataType":"string"},
         };
-        app.delete('/users/:userId',
+        app.delete('/users/:userEmail',
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.deleteUser)),
 

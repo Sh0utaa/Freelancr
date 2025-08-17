@@ -12,7 +12,7 @@ export class Validator {
     const usernameStatus = await this.validateUsername(user.username);
     if (!usernameStatus.success) return usernameStatus;
 
-    const passwordStatus = await this.checkPasswordStrength(user.password);
+    const passwordStatus = await this.validatePassword(user.password);
     if (!passwordStatus.success) return passwordStatus;
 
     return { success: true, value: user };
@@ -32,7 +32,7 @@ export class Validator {
     return { success: true, value: date };
   }
 
-  private async validateUsername(username: string): Promise<ValidationResult<string>> {
+  public async validateUsername(username: string): Promise<ValidationResult<string>> {
     if (
       await prisma.user.findFirst({
         where: { username },
@@ -48,7 +48,7 @@ export class Validator {
     return { success: true, value: username };
   }
 
-  private async validateEmail(email: string): Promise<ValidationResult<string>> {
+  public async validateEmail(email: string): Promise<ValidationResult<string>> {
     if (
       await prisma.user.findFirst({
         where: { email },
@@ -66,9 +66,9 @@ export class Validator {
     return { success: true, value: email };
   }
 
-  private async checkPasswordStrength(password: string): Promise<ValidationResult<string>> {
-    if (password.length <= 8) {
-      return { success: false, error: 'Password must be longer than 8 characters' };
+  public async validatePassword(password: string): Promise<ValidationResult<string>> {
+    if (password.length <= 6) {
+      return { success: false, error: 'Password must be longer than 6 characters' };
     }
 
     if (!/[A-Z]/.test(password)) {

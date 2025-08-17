@@ -136,9 +136,9 @@
 		"contact": {}
 	},
 	"paths": {
-		"/users/{userEmail}": {
+		"/users": {
 			"get": {
-				"operationId": "GetUserByEmail",
+				"operationId": "GetUser",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -154,40 +154,28 @@
 								}
 							}
 						}
-					},
-					"400": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"reason": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"reason"
-									],
-									"type": "object"
-								}
-							}
-						}
 					}
 				},
 				"security": [],
 				"parameters": [
 					{
-						"in": "path",
-						"name": "userEmail",
-						"required": true,
+						"in": "query",
+						"name": "id",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "email",
+						"required": false,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
-			}
-		},
-		"/users": {
+			},
 			"post": {
 				"operationId": "CreateUser",
 				"responses": {
@@ -260,7 +248,7 @@
 				}
 			}
 		},
-		"/users/{userId}": {
+		"/users/{userEmail}": {
 			"put": {
 				"operationId": "UpdateUser",
 				"responses": {
@@ -322,7 +310,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "userId",
+						"name": "userEmail",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -358,7 +346,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "userId",
+						"name": "userEmail",
 						"required": true,
 						"schema": {
 							"type": "string"

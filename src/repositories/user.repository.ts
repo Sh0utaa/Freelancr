@@ -62,11 +62,39 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async update(id: string, user: Partial<publicUser>): Promise<User | null> {
+  async update(email: string, user: Partial<publicUser>): Promise<User | null> {
     try {
+      const updateData: Partial<User> = {};
+
+      if (user.username) {
+        var res = await validator.validateUsername(user.username);
+        if (res.success) updateData.username = res.value;
+        else throw new Error(res.error);
+      }
+      if (user.email) {
+        var res = await validator.validateEmail(user.email);
+        if (res.success) updateData.email = res.value;
+        else throw new Error(res.error);
+      }
+      if (user.password) {
+        var res = await validator.validatePassword(user.password);
+        if (res.success) {
+          updateData.password = await bcrypt.hash(user.password, 10);
+        } else throw new Error(res.error);
+      }
+      if (user.pictureUrl) {
+        // todo
+        updateData.pictureUrl = user.pictureUrl;
+      }
+      if (user.birthDate) {
+        let res = await validator.parseBirthday(user.birthDate);
+        if (res.success) updateData.birthDate = res.value;
+        else throw new Error(res.error);
+      }
+
       return await prisma.user.update({
-        where: { id },
-        data: user,
+        where: { email },
+        data: updateData,
       });
     } catch (error: any) {
       if (error.code === 'P2025') {
@@ -77,16 +105,16 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(email: string): Promise<boolean> {
     try {
       await prisma.user.delete({
-        where: { id },
+        where: { email },
       });
 
       return true;
     } catch (error: any) {
       if (error.code === 'P2025') {
-        return false; // nothing deleted
+        return false;
       }
       console.error(`Error while deleting user: ${error}`);
       throw error;
